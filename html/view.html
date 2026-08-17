@@ -6,6 +6,7 @@
     <title>
         htmlview
     </title>
+    <link id="favicon" rel="icon">
     <style>
         body {
             font-family: "Arial", sans-serif;
@@ -21,7 +22,6 @@
             justify-content: center;
             
             padding: 1em;
-            border: 1px solid #cccccc;
             color: slategray;
 
             box-sizing: border-box;
@@ -48,9 +48,9 @@
     <script>
         const dropZone = document.getElementById("drop-zone");
         const preview = document.querySelector('.preview');
+        const favicon = document.getElementById("favicon");
 
         dropZone.addEventListener("drop", dropHandler);
-
 
         window.addEventListener("drop", (e) => {
             if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
@@ -58,7 +58,6 @@
             }
         });
         
-
         dropZone.addEventListener("dragover", (e) => {
             const fileItems = [...e.dataTransfer.items].filter(
                 (item) => item.kind === "file",
@@ -74,7 +73,6 @@
             }
         });
 
-
         window.addEventListener("dragover", (e) => {
             const fileItems = [...e.dataTransfer.items].filter(
                 (item) => item.kind === "file",
@@ -87,18 +85,19 @@
                 }
             }
         });
-
         
         function displayImages(files) {
             for (const file of files) {
                 if (file.type.startsWith("image/")) {
                     console.log(file)
-                    preview.src = URL.createObjectURL(file);
+                    let object = URL.createObjectURL(file);
+                    preview.src = object;
                     preview.alt = file.name;
+
+                    favicon.href = object;
                 }
             }
         }
-
 
         function dropHandler(ev) {
             ev.preventDefault();
@@ -108,13 +107,13 @@
             displayImages(files);
         }
 
-
         window.onload = (event) => {
             let params = new URLSearchParams(document.location.search);
             let file = params.get("file")?.replace(/\\/g, "/") || "";
             
             if (file){
                 preview.src = "file:///" + file;
+                favicon.href = "file:///" + file;
 
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
