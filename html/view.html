@@ -44,10 +44,13 @@
     <div id="drop-zone">Drop images here</div>
 
     <img class="preview">
+    
     <script>
         const dropZone = document.getElementById("drop-zone");
+        const preview = document.querySelector('.preview');
 
         dropZone.addEventListener("drop", dropHandler);
+
 
         window.addEventListener("drop", (e) => {
             if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
@@ -55,6 +58,7 @@
             }
         });
         
+
         dropZone.addEventListener("dragover", (e) => {
             const fileItems = [...e.dataTransfer.items].filter(
                 (item) => item.kind === "file",
@@ -70,6 +74,7 @@
             }
         });
 
+
         window.addEventListener("dragover", (e) => {
             const fileItems = [...e.dataTransfer.items].filter(
                 (item) => item.kind === "file",
@@ -83,16 +88,17 @@
             }
         });
 
-        const preview = document.querySelector('.preview');
-
+        
         function displayImages(files) {
             for (const file of files) {
                 if (file.type.startsWith("image/")) {
+                    console.log(file)
                     preview.src = URL.createObjectURL(file);
-                    img.alt = file.name;
+                    preview.alt = file.name;
                 }
             }
         }
+
 
         function dropHandler(ev) {
             ev.preventDefault();
@@ -101,6 +107,19 @@
                 .filter((file) => file);
             displayImages(files);
         }
+
+
+        window.onload = (event) => {
+            let params = new URLSearchParams(document.location.search);
+            let file = params.get("file")?.replace(/\\/g, "/") || "";
+            
+            if (file){
+                preview.src = "file:///" + file;
+
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+            }
+        };
     </script>       
 </body>
 </html>
