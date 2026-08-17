@@ -29,10 +29,6 @@
             height: 100dvh;
         }
 
-        #file-input {
-            display: none;
-        }
-
         .preview{
             position: absolute;
             left: 50%;
@@ -43,45 +39,50 @@
         }
     </style>
 </head>
+
 <body>
-    <div id="drop-zone">
-        Drop images here
-    </div>
+    <div id="drop-zone">Drop images here</div>
+
     <img class="preview">
-    <script type="">
+    <script>
         const dropZone = document.getElementById("drop-zone");
 
         dropZone.addEventListener("drop", dropHandler);
+
         window.addEventListener("drop", (e) => {
-        if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
-            e.preventDefault();
-        }
-        });
-        dropZone.addEventListener("dragover", (e) => {
-        const fileItems = [...e.dataTransfer.items].filter(
-            (item) => item.kind === "file",
-        );
-        if (fileItems.length > 0) {
-            e.preventDefault();
-            if (fileItems.some((item) => item.type.startsWith("image/"))) {
-            e.dataTransfer.dropEffect = "copy";
-            } else {
-            e.dataTransfer.dropEffect = "none";
+            if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
+                e.preventDefault();
             }
-        }
+        });
+        
+        dropZone.addEventListener("dragover", (e) => {
+            const fileItems = [...e.dataTransfer.items].filter(
+                (item) => item.kind === "file",
+            );
+
+            if (fileItems.length > 0) {
+                    e.preventDefault();
+                if (fileItems.some((item) => item.type.startsWith("image/"))) {
+                    e.dataTransfer.dropEffect = "copy";
+                } else {
+                    e.dataTransfer.dropEffect = "none";
+                }
+            }
         });
 
         window.addEventListener("dragover", (e) => {
-        const fileItems = [...e.dataTransfer.items].filter(
-            (item) => item.kind === "file",
-        );
-        if (fileItems.length > 0) {
-            e.preventDefault();
-            if (!dropZone.contains(e.target)) {
-            e.dataTransfer.dropEffect = "none";
+            const fileItems = [...e.dataTransfer.items].filter(
+                (item) => item.kind === "file",
+            );
+
+            if (fileItems.length > 0) {
+                e.preventDefault();
+                if (!dropZone.contains(e.target)) {
+                    e.dataTransfer.dropEffect = "none";
+                }
             }
-        }
         });
+
         const preview = document.querySelector('.preview');
 
         function displayImages(files) {
