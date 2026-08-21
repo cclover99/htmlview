@@ -4,7 +4,7 @@ True scale web screenshot viewer with an optional right click context menu entry
 
 #### Compile (MinGW):  
 ```cmd
-g++ -O2 ./src/launcher.cpp -o ./bin/launcher.exe -mwindows
+g++ -O2 ./launcher/src/launcher.cpp -o ./launcher/bin/launcher.exe -mwindows
 ```
 
 #### Install context menu entry

@@ -6,8 +6,7 @@ $ErrorActionPreference = 'Stop'
 $menuLabel = "Open image as a web screenshot"
 $menuId    = "OpenAsWebScreenshot"
 
-
-$executable  = Join-Path $PSScriptRoot "/bin/launcher.exe"
+$executable  = Join-Path $PSScriptRoot "/launcher/bin/launcher.exe"
 $viewer = Join-Path $PSScriptRoot "/html/view.html"
 
 if (-not (Test-Path $executable) || (Test-Path $viewer)) {
